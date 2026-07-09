@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "poc.fullname" . }}-keycloak
+  labels:
+    app: {{ include "poc.fullname" . }}
+    component: keycloak
+spec:
+  replicas: {{ .Values.replicaCount.keycloak }}
+  selector:
+    matchLabels:
+      app: {{ include "poc.fullname" . }}
+      component: keycloak
+  template:
+    metadata:
+      labels:
+        app: {{ include "poc.fullname" . }}
+        component: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: "{{ .Values.image.keycloak.repository }}:{{ .Values.image.keycloak.tag }}"
+          imagePullPolicy: {{ .Values.image.keycloak.pullPolicy }}
+          env:
+          {{- range $key, $val := .Values.keycloak.env }}
+            - name: {{ $key }}
+              value: {{ quote $val }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.service.keycloak.port }}
+          readinessProbe:
+            httpGet:
+              path: /realms/demo
+              port: {{ .Values.service.keycloak.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 10

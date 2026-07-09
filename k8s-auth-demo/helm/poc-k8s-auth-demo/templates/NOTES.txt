@@ -1,0 +1,9 @@
+Thank you for installing poc-k8s-auth-demo!
+
+1. To check services:
+
+  kubectl get svc -n {{ .Release.Namespace }}
+
+2. To port-forward frontend (if no ingress):
+
+  kubectl port-forward svc/{{ include "poc.fullname" . }}-frontend 8080:{{ .Values.service.frontend.port }} -n {{ .Release.Namespace }}

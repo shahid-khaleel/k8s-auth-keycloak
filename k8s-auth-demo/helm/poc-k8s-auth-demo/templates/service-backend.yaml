@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "poc.fullname" . }}-backend
+  labels:
+    app: {{ include "poc.fullname" . }}
+    component: backend
+spec:
+  type: {{ .Values.service.backend.type }}
+  ports:
+    - port: {{ .Values.service.backend.port }}
+      targetPort: {{ .Values.service.backend.port }}
+      protocol: TCP
+      name: http
+      {{- if eq .Values.service.backend.type "NodePort" }}
+      nodePort: {{ .Values.service.backend.nodePort }}
+      {{- end }}
+  selector:
+    app: {{ include "poc.fullname" . }}
+    component: backend

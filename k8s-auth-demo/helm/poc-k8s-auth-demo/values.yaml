@@ -1,0 +1,58 @@
+replicaCount:
+  backend: 1
+  frontend: 1
+  keycloak: 1
+
+image:
+  backend:
+    repository: k8-sample-backend
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+  frontend:
+    repository: k8-sample-frontend
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+  keycloak:
+    repository: k8-sample-keycloak
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+
+service:
+  backend:
+    type: NodePort
+    port: 8080
+  frontend:
+    type: NodePort
+    port: 80
+  keycloak:
+    type: NodePort
+    port: 8080
+
+backend:
+  env:
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_AUTHORIZATION_URI: "http://localhost:30081/realms/demo/protocol/openid-connect/auth"
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: "http://keycloak:8080/realms/demo/protocol/openid-connect/token"
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_USER_INFO_URI: "http://keycloak:8080/realms/demo/protocol/openid-connect/userinfo"
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_JWK_SET_URI: "http://keycloak:8080/realms/demo/protocol/openid-connect/certs"
+
+keycloak:
+  env:
+    KEYCLOAK_ADMIN: admin
+    KEYCLOAK_ADMIN_PASSWORD: admin
+    KC_HOSTNAME: "http://localhost:30081"
+    KC_HOSTNAME_STRICT: "false"
+
+ingress:
+  enabled: false
+  hosts:
+    - host: example.local
+      paths:
+        - /
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,13 @@
+apiVersion: v2
+name: poc-k8s-auth-demo
+description: "Crazy Helm chart for k8s-auth-demo — deploy backend, frontend, keycloak"
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - demo
+  - k8s
+  - auth
+maintainers:
+  - name: devteam
+    email: devnull@example.com

@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: {{ include "poc.fullname" . }}
+    component: backend
+spec:
+  type: {{ .Values.service.backend.type | default "ClusterIP" }}
+  ports:
+    - port: {{ .Values.service.backend.port }}
+      targetPort: {{ .Values.service.backend.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ include "poc.fullname" . }}
+    component: backend
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: {{ include "poc.fullname" . }}
+    component: frontend
+spec:
+  type: {{ .Values.service.frontend.type | default "ClusterIP" }}
+  ports:
+    - port: {{ .Values.service.frontend.port }}
+      targetPort: {{ .Values.service.frontend.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ include "poc.fullname" . }}
+    component: frontend
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  labels:
+    app: {{ include "poc.fullname" . }}
+    component: keycloak
+spec:
+  type: {{ .Values.service.keycloak.type | default "ClusterIP" }}
+  ports:
+    - port: {{ .Values.service.keycloak.port }}
+      targetPort: {{ .Values.service.keycloak.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ include "poc.fullname" . }}
+    component: keycloak
