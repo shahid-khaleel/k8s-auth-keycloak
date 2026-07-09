@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: k8-sample-keycloak:1.0.0
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+            - name: KC_HOSTNAME
+              value: http://localhost:30081
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /realms/demo
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+spec:
+  # type: ClusterIP
+  type: NodePort
+  selector:
+    app: keycloak
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30081

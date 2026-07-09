@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample Two Container App</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="status-panel">
+        <p class="eyebrow">Frontend container</p>
+        <h1>Sample App</h1>
+        <p class="intro">
+          Sign in with Keycloak, then trigger protected backend logic.
+        </p>
+
+        <div class="auth-panel">
+          <div>
+            <span class="label">Authentication</span>
+            <strong id="auth-status">Checking session...</strong>
+            <span id="auth-meta"></span>
+          </div>
+          <div class="auth-actions">
+            <button id="sign-in" type="button">Sign in</button>
+            <button id="sign-out" type="button">Sign out</button>
+          </div>
+        </div>
+
+        <div class="result" aria-live="polite">
+          <span class="label">Backend response</span>
+          <strong id="message">Loading...</strong>
+          <span id="meta"></span>
+        </div>
+
+        <div class="actions">
+          <button id="refresh" type="button">Refresh</button>
+        </div>
+
+        <form id="execute-form" class="function-panel">
+          <label for="function-input">Run protected backend function</label>
+          <div class="input-row">
+            <input
+              id="function-input"
+              name="input"
+              type="text"
+              value="Shahid"
+              autocomplete="off"
+            />
+            <button id="execute" type="submit">Run</button>
+          </div>
+          <output id="function-output" for="function-input">Waiting for input.</output>
+        </form>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

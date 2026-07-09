@@ -1,0 +1,49 @@
+{
+  "realm": "demo",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "clients": [
+    {
+      "clientId": "sample-app",
+      "name": "Sample App",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "sample-secret",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/login/oauth2/code/keycloak",
+        "http://localhost:30080/login/oauth2/code/keycloak",
+        "http://192.168.58.2:30080/login/oauth2/code/keycloak"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://localhost:30080",
+        "http://192.168.58.2:30080"
+      ],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/*##http://localhost:30080/*##http://192.168.58.2:30080/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "demo",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "User",
+      "email": "demo@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}
