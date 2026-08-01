@@ -1,6 +1,6 @@
 # Kubernetes Deployment Documentation
 
-This document explains the architecture, Docker builds, Kubernetes manifests, and local Minikube testing for this sample app.
+See the [repo root README](../README.md) for the executive summary and architecture diagram, and [`README.md`](README.md) in this folder for the fastest path to running the app. This document explains the architecture, Docker builds, Kubernetes manifests, and local Minikube testing for this sample app.
 
 ## Overview
 

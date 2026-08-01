@@ -1,6 +1,6 @@
-# Sample Two Container App
+# k8s-auth-demo — Quickstart
 
-This project contains a frontend container, a Spring Boot backend container, and Keycloak running in Kubernetes.
+This project contains a frontend container, a Spring Boot backend container, and Keycloak running in Kubernetes — three containers in total. See the [repo root README](../README.md) for the architecture overview, [`DEPLOYMENT.md`](DEPLOYMENT.md) for full deployment details, and [`HELM.md`](HELM.md) for the Helm chart workflow.
 
 ## Images
 

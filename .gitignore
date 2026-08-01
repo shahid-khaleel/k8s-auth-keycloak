@@ -1,0 +1,29 @@
+# --- Java / Maven (backend) ---
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+!k8s-auth-demo/backend/.mvn/
+
+# --- Node (frontend tooling, if introduced later) ---
+node_modules/
+npm-debug.log*
+
+# --- IDE ---
+.idea/
+*.iml
+.vscode/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Helm ---
+*.tgz
+helm/**/charts/
+
+# --- Local env / secrets ---
+.env
+.env.*
+*.local.yaml

@@ -1,6 +1,6 @@
 # Helm guide — poc-k8s-auth-demo
 
-This repository includes a Helm chart at `helm/poc-k8s-auth-demo` to deploy the demo application (backend, frontend, keycloak). This document provides a step-by-step guide for developers and CI.
+See the [repo root README](../README.md) for the architecture overview. This repository includes a Helm chart at `helm/poc-k8s-auth-demo` to deploy the demo application (backend, frontend, keycloak). This document provides a step-by-step guide for developers and CI.
 
 1) Quick sanity checks
 
@@ -44,6 +44,8 @@ jobs:
         run: helm template ci helm/poc-k8s-auth-demo --values helm/poc-k8s-auth-demo/values.yaml
 ```
 
-5) Want changes done for you?
+5) Recommended follow-ups
 
-- I can make `compat-services` optional, add Secrets templates, or create `helm test` jobs. Tell me which and I'll implement it.
+- Make `compat-services.yaml` conditional (e.g. `compatibilityServices.enabled`) instead of always rendering.
+- Add a `templates/secret.yaml` so the Keycloak admin password and client secret can be supplied via a Kubernetes `Secret` / `--set-file` instead of plaintext `values.yaml`.
+- Add a `helm test` Job (see `helm/poc-k8s-auth-demo/README.md`) that curls the backend from inside the cluster to catch wiring regressions in CI.
