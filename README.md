@@ -1,5 +1,6 @@
 # poc-k8s-auth-demo
 
+[![validate](https://github.com/shahid-khaleel/k8s-auth-keycloak/actions/workflows/validate.yml/badge.svg)](https://github.com/shahid-khaleel/k8s-auth-keycloak/actions/workflows/validate.yml)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-local%20cluster-326CE5?logo=kubernetes&logoColor=white)
 ![Keycloak](https://img.shields.io/badge/Keycloak-26.2-4D4D4D?logo=keycloak&logoColor=white)
 ![Helm](https://img.shields.io/badge/Helm-chart%20included-0F1689?logo=helm&logoColor=white)
@@ -62,6 +63,18 @@ This README is intentionally an overview. For hands-on instructions, use:
 | Installing/upgrading via the Helm chart, CI linting snippet | [`k8s-auth-demo/HELM.md`](k8s-auth-demo/HELM.md) |
 | Line-by-line explanation of the architecture, backend, frontend code | [`k8s-auth-demo/code-explanation/`](k8s-auth-demo/code-explanation/) |
 
+## Continuous integration
+
+A GitHub Actions workflow ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)) runs on every push/PR to `main` and is entirely credential-free — it only builds and lints from source, no registry pushes or cluster access:
+
+| Job | What it checks |
+|---|---|
+| `java-build` | `mvn -B package -DskipTests` against `k8s-auth-demo/backend/` (Java 17, Maven) |
+| `helm-lint` | `helm lint` + `helm template` against `k8s-auth-demo/helm/poc-k8s-auth-demo/` |
+| `k8s-manifests` | `yamllint` + `kubeconform` against `k8s-auth-demo/k8s/*.yaml` |
+
+There's no `frontend-build` job: `k8s-auth-demo/frontend/` is static HTML/CSS/JS with no `package.json` or build tooling — it's served as-is by Nginx (see `frontend/Dockerfile`).
+
 ## Security considerations
 
 This is a **demo/POC**, not a hardened reference implementation. Findings from reviewing `keycloak/realm-export.json`, the Kubernetes manifests, and the Helm `values.yaml`:
@@ -77,7 +90,7 @@ This is a **demo/POC**, not a hardened reference implementation. Findings from r
 
 ## Known issues / recommendations
 
-- **No CI pipeline.** There is no GitHub Actions workflow in this repo — `HELM.md` includes a suggested `helm lint`/`helm template` snippet, but it isn't wired up. Adding a basic workflow (Maven build, `helm lint`, `docker build`) would materially raise the bar for a portfolio piece.
+- **CI covers build/lint, not runtime behavior.** The GitHub Actions workflow (see [Continuous integration](#continuous-integration)) validates that the backend compiles, the Helm chart renders, and the manifests are well-formed/schema-valid — it does not build/push container images or exercise the running stack. Adding a `docker build` job (no push) and a `helm test` job would extend coverage further.
 - **No automated tests.** The backend has no test sources (`src/test` is absent), and there's no `helm test` job despite the Helm chart README suggesting one as a "recommended" next step.
 - **Build artifacts are committed to git.** `k8s-auth-demo/backend/target/` (compiled `.class` files and Maven metadata) is tracked in version control. A `.gitignore` has now been added at the repo root to prevent new build output from being committed, but the existing tracked files under `target/` were left in place since removing already-tracked history-bearing files was outside the scope of this documentation pass — a maintainer should run `git rm -r --cached k8s-auth-demo/backend/target` in a follow-up commit.
 - **Secret handling**, as detailed above — fine for a local demo, would need rework before any shared or persistent environment.
